@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="hi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>दूध का हिसाब</title><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0A6B53"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#F1F7F4;--card:#fff;--tx:#12302A;--tx2:#5A726B;--pri:#0F8F6F;--pri2:#0A6B53;--soft:#DDF3EA;--amb:#FFF1D6;--ambtx:#7A4A00;--red:#FBE3E1;--redtx:#A32D2D;--bd:#D6E5DF;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1815;--card:#172420;--tx:#E6F4EF;--tx2:#97B3AA;--soft:#1E3A31;--amb:#3A2D12;--ambtx:#F5D48A;--red:#3C1D1B;--redtx:#F5B5B0;--bd:#2A403A}}
+:root[data-theme="dark"]{--bg:#0E1815;--card:#172420;--tx:#E6F4EF;--tx2:#97B3AA;--soft:#1E3A31;--amb:#3A2D12;--ambtx:#F5D48A;--red:#3C1D1B;--redtx:#F5B5B0;--bd:#2A403A}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Noto Sans Devanagari","Segoe UI",Roboto,sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:96px}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.hd{background:var(--pri2);color:#fff;padding:22px 20px 56px;border-radius:0 0 28px 28px;position:relative;overflow:hidden}
+.hd:after{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.1)}
+.hd h1{margin:0;font-size:22px;font-weight:600}
+.hd p{margin:4px 0 0;font-size:14px;opacity:.85}
+.hd .g{position:absolute;right:20px;top:18px;font-size:38px;z-index:1}
+.wrap{padding:0 16px;margin-top:-38px;position:relative}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:16px;margin-bottom:14px}
+.dn{display:flex;align-items:center;justify-content:space-between}
+.dn button{width:44px;height:44px;border-radius:50%;background:var(--soft);font-size:24px;color:var(--pri2)}
+.dn div{text-align:center;font-weight:600;font-size:17px}
+.dn small{display:block;font-weight:400;color:var(--tx2);font-size:13px}
+.big{text-align:center;font-size:64px;font-weight:700;color:var(--pri);margin:10px 0 0;line-height:1.1}
+.big span{font-size:20px;font-weight:500;color:var(--tx2)}
+.mic{display:block;margin:12px auto 4px;width:76px;height:76px;border-radius:50%;background:var(--amb);border:3px solid #EF9F27;font-size:34px}
+.vi{display:block;width:100%;margin:6px 0 0;padding:12px;border-radius:12px;border:1px dashed var(--bd);background:var(--bg);color:var(--tx);font:inherit;font-size:14px;text-align:center}
+.wa{display:block;width:100%;margin-top:14px;background:#25D366;color:#053B1A;border-radius:14px;padding:15px;font-size:17px;font-weight:600}
+.hint{text-align:center;font-size:13px;color:var(--tx2);min-height:18px}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.chips button{background:var(--soft);color:var(--pri2);border-radius:16px;padding:16px 0;font-size:20px;font-weight:600;border:3px solid transparent}
+.chips button.on{background:var(--pri);color:#fff;border-color:var(--pri2)}
+.row{display:flex;gap:10px}
+.row button{flex:1;border-radius:16px;padding:16px 4px;font-size:16px;font-weight:600}
+.no{background:var(--red);color:var(--redtx)}
+.ok{background:var(--pri);color:#fff;flex:1.4!important;font-size:18px!important}
+.stat{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--tx2)}
+.stat b{font-size:20px;color:var(--tx)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
+.grid .w{font-size:12px;color:var(--tx2);padding:4px 0}
+.grid .d{border-radius:12px;padding:6px 0 5px;font-size:13px;min-height:50px;background:transparent;color:var(--tx2)}
+.grid .d b{display:block;font-size:14px;margin-top:1px}
+.grid .d.y{background:var(--soft);color:var(--pri2)}
+.grid .d.z{background:var(--red);color:var(--redtx)}
+.grid .d.t{outline:2.5px solid var(--pri)}
+.leg{display:flex;gap:14px;font-size:12px;color:var(--tx2);justify-content:center;margin-top:12px}
+.tot{text-align:center}
+.tot small{color:var(--tx2);font-size:14px}
+.tot div{font-size:44px;font-weight:700;color:var(--pri)}
+.ln{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--bd);font-size:15px}
+.ln small{display:block;color:var(--tx2);font-size:12px;margin-top:2px}
+.ln b{font-size:16px}
+h3{margin:0 0 6px;font-size:16px}
+.x{width:32px;height:32px;border-radius:50%;background:var(--red);color:var(--redtx);font-size:14px}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.f input{width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit;font-size:15px}
+.f button{grid-column:1/3;background:var(--pri);color:#fff;border-radius:14px;padding:14px;font-weight:600;font-size:16px}
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:var(--card);border-top:1px solid var(--bd);padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px))}
+.nav div{display:flex;width:100%;max-width:480px}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;border-radius:16px;font-size:13px;color:var(--tx2)}
+.nav button span{font-size:24px}
+.nav button.on{background:var(--soft);color:var(--pri2);font-weight:600}
+.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:12px 20px;border-radius:30px;font-size:15px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+.toast.s{opacity:1}
+.demo{font-size:12px;text-align:center;color:var(--tx2);margin:6px 0 0}
+</style></head>
+<body>
+<div class="hd"><div class="g">🥛</div><h1>दूध का हिसाब</h1><p id="sub"></p></div>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast"></div>
+<div class="nav"><div id="nav"></div></div>
+<script>
+const $=s=>document.querySelector(s);
+const M=['जनवरी','फ़रवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+const D=['रवि','सोम','मंगल','बुध','गुरु','शुक्र','शनि'];
+const p=n=>String(n).padStart(2,'0');
+const iso=(y,m,d)=>y+'-'+p(m+1)+'-'+p(d);
+const f=n=>String(Math.round(n*100)/100);
+const rs=n=>'₹'+n.toLocaleString('en-IN',{maximumFractionDigits:2});
+const now=new Date(),TD=iso(now.getFullYear(),now.getMonth(),now.getDate());
+let ready=false,st={tab:0,sel:TD,y:now.getFullYear(),m:now.getMonth(),q:1.5},ent={},rates=[];
+let cfg=null;
+try{const h=decodeURIComponent(location.hash.slice(1)),i=h.lastIndexOf('|');if(i>0){localStorage.setItem('doodh-cfg',JSON.stringify({u:h.slice(0,i),k:h.slice(i+1)}));history.replaceState(null,'',location.pathname)}cfg=JSON.parse(localStorage.getItem('doodh-cfg')||'null')}catch(e){}
+try{const c=JSON.parse(localStorage.getItem('doodh-cache')||'null');if(c){ent=c.ent||{};rates=c.rates||[]}}catch(e){}
+async function call(a,...args){if(!cfg)throw new Error('setup');const r=await fetch(cfg.u,{method:'POST',body:JSON.stringify({key:cfg.k,action:a,args})}),j=await r.json();if(j.error)throw new Error(j.error);return j.data}
+function srv(fn,...a){call(fn,...a).catch(()=>toast('⚠️ सेव नहीं हुआ, नेट देखो'))}
+function load(){if(!cfg){$('#app').innerHTML='<div class="card"><b>सेटअप बाकी है</b><p style="color:var(--tx2)">जो सेटअप लिंक मिला है, उसी से app खोलो।</p></div>';return}call('getData').then(d=>{ent=d.ent||{};rates=d.rates||[];ready=true;try{localStorage.setItem('doodh-cache',JSON.stringify(d))}catch(e){}setSel(st.sel);render()}).catch(()=>toast('नेट नहीं है'))}
+function bn(){if(!ready||ent[TD]!==undefined||(st.tab==0&&st.sel==TD))return'';return`<div class="card" style="background:var(--amb);color:var(--ambtx);border-color:#EF9F27;display:flex;align-items:center;justify-content:space-between;gap:10px"><b style="font-size:16px">⏰ आज की entry बाकी है</b><button onclick="pick(TD)" style="background:#EF9F27;color:#412402;border-radius:12px;padding:10px 14px;font-weight:600">अभी भरो</button></div>`}
+function wa(){const b=bill(),n=new Date(st.y,st.m+1,0).getDate();let t=`🥛 *दूध का हिसाब — ${M[st.m]} ${st.y}*\n\nकुल: ${f(b.L)} लीटर (${b.days} दिन)\n`;b.rows.forEach(x=>{t+=`${x.a}–${x.b} ${M[st.m]}: ${f(x.l)} लीटर × ${rs(x.r)} = ${rs(x.l*x.r)}\n`});t+=`\n*कुल बिल: ${rs(b.T)}*\n\nदिन-वार (तारीख-लीटर):\n`;const a=[];for(let d=1;d<=n;d++){const v=ent[iso(st.y,st.m,d)];if(v!==undefined)a.push(d+'-'+f(v))}t+=a.join(', ');const u='https://wa.me/?text='+encodeURIComponent(t);const w=window.open(u,'_blank');if(!w)window.top.location.href=u}
+function vin(v){const x=parse(String(v).toLowerCase());if(x==null){toast('समझ नहीं आया')}else{st.q=x;render()}}
+function listen(){const R=window.SpeechRecognition||window.webkitSpeechRecognition,h=$('#hint');if(!R){h.textContent='Chrome में खोलो';return}const r=new R();r.lang='hi-IN';r.onresult=e=>{const t=e.results[0][0].transcript.toLowerCase(),v=parse(t);if(v==null)h.textContent='समझ नहीं आया: '+t;else{st.q=v;render()}};r.onerror=e=>{if(e.error=='not-allowed'){h.textContent='नीचे वाले डिब्बे में कीबोर्ड 🎤 से बोलो';const i=document.querySelector('.vi');if(i)i.focus()}else h.textContent='फिर से बोलो'};r.start();h.textContent='सुन रहा हूँ…'}
+function rateOf(s){const a=[...rates].sort((x,y)=>x.f<y.f?-1:1);let r=a[0]||{f:'0000-00-00',r:0};for(const x of a)if(x.f<=s)r=x;return r}
+function addRate(){const d=$('#rd').value,v=parseFloat($('#rv').value);if(!d||!(v>0)){toast('तारीख और रेट भरो');return}rates=rates.filter(x=>x.f!==d);rates.push({f:d,r:v});srv('saveRate',d,v);toast('रेट जुड़ गया');render()}
+function delRate(d){if(rates.length<2)return;rates=rates.filter(x=>x.f!==d);srv('deleteRate',d);render()}
+function bill(){const n=new Date(st.y,st.m+1,0).getDate(),seg={};let L=0,days=0;for(let d=1;d<=n;d++){const s=iso(st.y,st.m,d),v=ent[s];if(v>0){const r=rateOf(s);const k=r.f;seg[k]=seg[k]||{r:r.r,l:0,f:r.f};seg[k].l+=v;L+=v;days++}}let T=0;const a=[...rates].sort((x,y)=>x.f<y.f?-1:1),ms=iso(st.y,st.m,1),me=iso(st.y,st.m,n);const rows=Object.values(seg).sort((a,b)=>a.f<b.f?-1:1);rows.forEach(x=>{const i=a.findIndex(z=>z.f===x.f),nx=a[i+1];x.a=x.f>ms?dt(x.f).getDate():1;x.b=nx&&nx.f<=me?dt(nx.f).getDate()-1:n;T+=x.l*x.r});return{rows,L,days,T}}
+function lab(s){const d=dt(s);return d.getDate()+' '+M[d.getMonth()]}
+function render(){
+const T=['आज','कैलेंडर','हिसाब'],I=['🥛','📅','🧾'];
+$('#nav').innerHTML=T.map((t,i)=>`<button class="${st.tab==i?'on':''}" onclick="st.tab=${i};render();scrollTo(0,0)"><span>${I[i]}</span>${t}</button>`).join('');
+let h='';const b=bill();
+if(st.tab==0){const d=dt(st.sel);$('#sub').textContent='नमस्ते! आज दूध कितना आया?';
+h=`<div class="card"><div class="dn"><button onclick="mv(-1)">‹</button><div>${D[d.getDay()]}, ${d.getDate()} ${M[d.getMonth()]}<small>${st.sel==TD?'आज':ent[st.sel]!==undefined?'पहले से लिखा है: '+f(ent[st.sel])+' लीटर':'—'}</small></div><button onclick="mv(1)">›</button></div>
+<div class="big">${f(st.q)}<span> लीटर</span></div>
+<button class="mic" onclick="listen()" aria-label="बोलकर लिखो">🎤</button><div class="hint" id="hint">दबाकर बोलो: "डेढ़ लीटर"</div><input class="vi" type="text" placeholder="⌨️ या यहाँ कीबोर्ड का 🎤 से बोलो" onchange="vin(this.value)">
+<div class="chips">${[.5,1,1.5,2,2.5,3].map(v=>`<button class="${v==st.q?'on':''}" onclick="q(${v})">${v==.5?'½':f(v)}</button>`).join('')}</div>
+<div class="row"><button class="no" onclick="nope()">❌ नहीं आया</button><button class="ok" onclick="sv()">✅ सेव करो</button></div></div>
+<div class="card stat"><span>${M[st.m]} में अब तक<br><b>${f(b.L)} लीटर</b></span><span style="text-align:right">${b.days} दिन आया<br><b>${rs(b.T)}</b></span></div>`}
+if(st.tab==1){$('#sub').textContent='किसी भी तारीख पर दबाओ';
+const n=new Date(st.y,st.m+1,0).getDate(),s0=new Date(st.y,st.m,1).getDay();let c=D.map(x=>`<div class="w">${x}</div>`).join('')+'<div></div>'.repeat(s0);
+for(let d=1;d<=n;d++){const s=iso(st.y,st.m,d),v=ent[s];c+=`<button class="d ${v>0?'y':v===0?'z':''} ${s==TD?'t':''}" onclick="pick('${s}')">${d}<b>${v===undefined?'':f(v)}</b></button>`}
+h=`<div class="card"><div class="dn"><button onclick="mm(-1)">‹</button><div>${M[st.m]} ${st.y}<small>${f(b.L)} लीटर · ${b.days} दिन</small></div><button onclick="mm(1)">›</button></div><div class="grid" style="margin-top:14px">${c}</div>
+<div class="leg"><span>🟩 दूध आया</span><span>🟥 नहीं आया</span></div></div>`}
+if(st.tab==2){$('#sub').textContent=M[st.m]+' का हिसाब';
+h=`<div class="card"><div class="dn"><button onclick="mm(-1)">‹</button><div>${M[st.m]} ${st.y}</div><button onclick="mm(1)">›</button></div>
+<div class="tot"><small>कुल बिल</small><div>${rs(b.T)}</div><small>${f(b.L)} लीटर · ${b.days} दिन</small></div>
+${b.rows.map(x=>`<div class="ln"><span>${x.a}–${x.b} ${M[st.m]} · ${rs(x.r)}/लीटर<small>${f(x.l)} लीटर × ${rs(x.r)}</small></span><b>${rs(x.l*x.r)}</b></div>`).join('')}
+<button class="wa" onclick="wa()">📤 WhatsApp पर बिल भेजो</button>
+<div style="background:var(--amb);color:var(--ambtx);border-radius:16px;padding:14px;margin-top:14px"><b style="font-size:16px">🔁 बीच महीने में रेट बदली?</b><div style="font-size:13px;margin-top:4px">जिस तारीख से रेट बदला वो चुनो और नया रेट लिखो। उस तारीख से नया रेट लगेगा, पहले का पुराना ही रहेगा।</div>
+<div class="f"><input type="date" id="rd" value="${st.y==now.getFullYear()&&st.m==now.getMonth()?TD:iso(st.y,st.m,11)}"><input type="number" id="rv" inputmode="decimal" placeholder="नया रेट ₹"><button onclick="addRate()">➕ इस तारीख से रेट बदलो</button></div></div></div>
+<div class="card"><h3>रेट की list</h3>${[...rates].sort((a,c)=>a.f<c.f?-1:1).map(x=>`<div class="ln"><span>${lab(x.f)} से<small>${rates.length>1?'':'पहला रेट'}</small></span><span><b>${rs(x.r)}</b> / लीटर ${rates.length>1?`<button class="x" onclick="delRate('${x.f}')" aria-label="हटाओ">✕</button>`:''}</span></div>`).join('')}
+</div>`}
+$('#app').innerHTML=bn()+h}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+render();load();document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
+</script></body></html>
