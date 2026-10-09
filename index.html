@@ -83,8 +83,11 @@ let cfg=null;
 try{const h=decodeURIComponent(location.hash.slice(1)),i=h.lastIndexOf('|');if(i>0){localStorage.setItem('doodh-cfg',JSON.stringify({u:h.slice(0,i),k:h.slice(i+1)}));history.replaceState(null,'',location.pathname)}cfg=JSON.parse(localStorage.getItem('doodh-cfg')||'null')}catch(e){}
 try{const c=JSON.parse(localStorage.getItem('doodh-cache')||'null');if(c){ent=c.ent||{};rates=c.rates||[]}}catch(e){}
 async function call(a,...args){if(!cfg)throw new Error('setup');const r=await fetch(cfg.u,{method:'POST',body:JSON.stringify({key:cfg.k,action:a,args})}),j=await r.json();if(j.error)throw new Error(j.error);return j.data}
-function srv(fn,...a){call(fn,...a).catch(()=>toast('⚠️ सेव नहीं हुआ, नेट देखो'))}
-function load(){if(!cfg){$('#app').innerHTML='<div class="card"><b>सेटअप बाकी है</b><p style="color:var(--tx2)">जो सेटअप लिंक मिला है, उसी से app खोलो।</p></div>';return}call('getData').then(d=>{ent=d.ent||{};rates=d.rates||[];ready=true;try{localStorage.setItem('doodh-cache',JSON.stringify(d))}catch(e){}setSel(st.sel);render()}).catch(e=>toast('⚠️ '+(e&&e.message==='bad key'?'secret गलत है':'नेट/सेटअप दिक्कत')))}
+function errMsg(e){const m=e&&e.message;return m==='setup'?'⚠️ सेटअप बाकी है':m==='bad key'?'⚠️ secret गलत है':'⚠️ नेट/सेटअप दिक्कत'}
+function setupCard(){return`<div class="card"><b style="font-size:17px">सेटअप बाकी है</b><p style="color:var(--tx2);font-size:14px">मिला हुआ पूरा सेटअप लिंक नीचे paste करो:</p><input class="vi" id="sl" type="text" placeholder="सेटअप लिंक यहाँ paste करो"><button class="wa" style="background:var(--pri);color:#fff" onclick="saveSetup()">✅ सेटअप करो</button></div>`}
+function saveSetup(){const v=($('#sl').value||'').trim(),k=v.indexOf('#');if(k<0){toast('पूरा लिंक paste करो');return}let h='';try{h=decodeURIComponent(v.slice(k+1))}catch(e){}const i=h.lastIndexOf('|');if(i<1){toast('लिंक अधूरा है');return}cfg={u:h.slice(0,i),k:h.slice(i+1)};try{localStorage.setItem('doodh-cfg',JSON.stringify(cfg))}catch(e){}load()}
+function srv(fn,...a){call(fn,...a).catch(e=>toast(errMsg(e)))}
+function load(){if(!cfg){render();return}call('getData').then(d=>{ent=d.ent||{};rates=d.rates||[];ready=true;try{localStorage.setItem('doodh-cache',JSON.stringify(d))}catch(e){}setSel(st.sel);render()}).catch(e=>toast(errMsg(e)))}
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('s');setTimeout(()=>e.classList.remove('s'),1600)}
 function dt(s){return new Date(s+'T00:00:00')}
 function setSel(s){st.sel=s;st.q=ent[s]!==undefined&&ent[s]>0?ent[s]:1.5;const d=dt(s);st.y=d.getFullYear();st.m=d.getMonth()}
@@ -129,7 +132,7 @@ ${b.rows.map(x=>`<div class="ln"><span>${x.a}–${x.b} ${M[st.m]} · ${rs(x.r)}/
 <div class="f"><input type="date" id="rd" value="${st.y==now.getFullYear()&&st.m==now.getMonth()?TD:iso(st.y,st.m,11)}"><input type="number" id="rv" inputmode="decimal" placeholder="नया रेट ₹"><button onclick="addRate()">➕ इस तारीख से रेट बदलो</button></div></div></div>
 <div class="card"><h3>रेट की list</h3>${[...rates].sort((a,c)=>a.f<c.f?-1:1).map(x=>`<div class="ln"><span>${lab(x.f)} से<small>${rates.length>1?'':'पहला रेट'}</small></span><span><b>${rs(x.r)}</b> / लीटर ${rates.length>1?`<button class="x" onclick="delRate('${x.f}')" aria-label="हटाओ">✕</button>`:''}</span></div>`).join('')}
 </div>`}
-$('#app').innerHTML=bn()+h}
+$('#app').innerHTML=cfg?bn()+h:setupCard()}
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 render();load();document.addEventListener('visibilitychange',()=>{if(!document.hidden)load()});
 </script></body></html>
