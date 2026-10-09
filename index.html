@@ -84,7 +84,17 @@ try{const h=decodeURIComponent(location.hash.slice(1)),i=h.lastIndexOf('|');if(i
 try{const c=JSON.parse(localStorage.getItem('doodh-cache')||'null');if(c){ent=c.ent||{};rates=c.rates||[]}}catch(e){}
 async function call(a,...args){if(!cfg)throw new Error('setup');const r=await fetch(cfg.u,{method:'POST',body:JSON.stringify({key:cfg.k,action:a,args})}),j=await r.json();if(j.error)throw new Error(j.error);return j.data}
 function srv(fn,...a){call(fn,...a).catch(()=>toast('⚠️ सेव नहीं हुआ, नेट देखो'))}
-function load(){if(!cfg){$('#app').innerHTML='<div class="card"><b>सेटअप बाकी है</b><p style="color:var(--tx2)">जो सेटअप लिंक मिला है, उसी से app खोलो।</p></div>';return}call('getData').then(d=>{ent=d.ent||{};rates=d.rates||[];ready=true;try{localStorage.setItem('doodh-cache',JSON.stringify(d))}catch(e){}setSel(st.sel);render()}).catch(()=>toast('नेट नहीं है'))}
+function load(){if(!cfg){$('#app').innerHTML='<div class="card"><b>सेटअप बाकी है</b><p style="color:var(--tx2)">जो सेटअप लिंक मिला है, उसी से app खोलो।</p></div>';return}call('getData').then(d=>{ent=d.ent||{};rates=d.rates||[];ready=true;try{localStorage.setItem('doodh-cache',JSON.stringify(d))}catch(e){}setSel(st.sel);render()}).catch(e=>toast('⚠️ '+(e&&e.message==='bad key'?'secret गलत है':'नेट/सेटअप दिक्कत')))}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('s');setTimeout(()=>e.classList.remove('s'),1600)}
+function dt(s){return new Date(s+'T00:00:00')}
+function setSel(s){st.sel=s;st.q=ent[s]!==undefined&&ent[s]>0?ent[s]:1.5;const d=dt(s);st.y=d.getFullYear();st.m=d.getMonth()}
+function mv(n){const d=dt(st.sel);d.setDate(d.getDate()+n);setSel(iso(d.getFullYear(),d.getMonth(),d.getDate()));render()}
+function mm(n){st.m+=n;if(st.m<0){st.m=11;st.y--}if(st.m>11){st.m=0;st.y++}render()}
+function pick(s){setSel(s);st.tab=0;render()}
+function sv(){ent[st.sel]=st.q;srv('saveEntry',st.sel,st.q);toast('✅ सेव हो गया');render()}
+function nope(){ent[st.sel]=0;srv('saveEntry',st.sel,0);toast('आज नहीं आया — लिख लिया');render()}
+function q(v){st.q=v;render()}
+function parse(t){const W=[['डेढ़|डेढ|dedh|derh',1.5],['ढाई|dhai|dhaai',2.5],['आधा|आधे|aadha|half',.5],['एक|ek|one',1],['दो|do|two',2],['तीन|teen|three',3]];const m=t.match(/\d+([.,]\d+)?/);if(m)return +m[0].replace(',','.');for(const[k,v]of W)if(new RegExp(k).test(t))return v;return null}
 function bn(){if(!ready||ent[TD]!==undefined||(st.tab==0&&st.sel==TD))return'';return`<div class="card" style="background:var(--amb);color:var(--ambtx);border-color:#EF9F27;display:flex;align-items:center;justify-content:space-between;gap:10px"><b style="font-size:16px">⏰ आज की entry बाकी है</b><button onclick="pick(TD)" style="background:#EF9F27;color:#412402;border-radius:12px;padding:10px 14px;font-weight:600">अभी भरो</button></div>`}
 function wa(){const b=bill(),n=new Date(st.y,st.m+1,0).getDate();let t=`🥛 *दूध का हिसाब — ${M[st.m]} ${st.y}*\n\nकुल: ${f(b.L)} लीटर (${b.days} दिन)\n`;b.rows.forEach(x=>{t+=`${x.a}–${x.b} ${M[st.m]}: ${f(x.l)} लीटर × ${rs(x.r)} = ${rs(x.l*x.r)}\n`});t+=`\n*कुल बिल: ${rs(b.T)}*\n\nदिन-वार (तारीख-लीटर):\n`;const a=[];for(let d=1;d<=n;d++){const v=ent[iso(st.y,st.m,d)];if(v!==undefined)a.push(d+'-'+f(v))}t+=a.join(', ');const u='https://wa.me/?text='+encodeURIComponent(t);const w=window.open(u,'_blank');if(!w)window.top.location.href=u}
 function vin(v){const x=parse(String(v).toLowerCase());if(x==null){toast('समझ नहीं आया')}else{st.q=x;render()}}
